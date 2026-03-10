@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (modal) {
         accountBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                console.log("Click en perfil detectado");
                 modal.style.display = 'flex';
             });
         });
