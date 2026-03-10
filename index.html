@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="FutureCode: El marketplace de componentes web premium para desarrolladores modernos. HTML, CSS y JavaScript para llevar tus proyectos al futuro.">
+    <title>FutureCode | Marketplace de Código Futurista</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Mercado Pago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Hero Image Placeholder Styling (Temporary) -->
+    <style>
+        .hero-glow-element {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(40px);
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(20px, -20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-panel glass-nav">
+        <div class="logo">
+            <h2 style="font-family: 'Outfit'; color: #1e293b; letter-spacing: -1px;">Future<span
+                    style="color: var(--accent-blue);">Code</span></h2>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="#about">Nosotros</a>
+        </div>
+        <div class="nav-actions">
+            <!-- Search Button (Only icon on Mobile, Full Bar on Desktop) -->
+            <div id="mobile-search-trigger" class="mobile-search-icon"
+                style="width: 40px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 50%; border: 1px solid rgba(0,0,0,0.05); display: none; place-items: center; cursor: pointer;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+            </div>
+
+            <div class="search-bar-desktop"
+                style="padding: 8px 15px; background: rgba(0,0,0,0.03); border-radius: 50px; display: flex; align-items: center; border: 1px solid rgba(0,0,0,0.05);">
+                <input type="text" id="global-search" placeholder="Buscar..."
+                    style="background: none; border: none; font-size: 14px; color: #1e293b; outline: none; width: 140px;">
+            </div>
+
+            <!-- Profile/Account Button -->
+            <div id="account-btn"
+                style="width: 40px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 50%; border: 1px solid rgba(0,0,0,0.05); display: grid; place-items: center; cursor: pointer;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+        </div>
+        <div class="burger-menu" id="burger">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </div>
+    </nav>
+
+    <!-- Account/Auth Modal -->
+    <div class="modal-overlay" id="account-modal">
+        <div class="glass-panel modal-content" style="max-width: 450px;">
+            <span class="modal-close" id="modal-close">✕</span>
+            
+            <div id="auth-tabs" style="display: flex; gap: 20px; margin-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
+                <h3 id="tab-login" style="cursor: pointer; color: var(--accent-blue); position: relative;">Iniciar Sesión</h3>
+                <h3 id="tab-register" style="cursor: pointer; color: #64748b;">Crear Cuenta</h3>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="input-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="login-email" class="input-field" placeholder="tu@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-password" class="input-field" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Entrar</button>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form id="register-form" style="display: none;">
+                <div class="input-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="reg-name" class="input-field" placeholder="Ej. Juan Pérez" required>
+                </div>
+                <div class="input-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="reg-email" class="input-field" placeholder="tu@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="reg-password" class="input-field" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Registrarse</button>
+            </form>
+
+            <div id="auth-success-msg" style="display: none; text-align: center; padding: 20px;">
+                <h3 style="color: var(--accent-blue);">¡Bienvenido, <span id="user-display-name"></span>!</h3>
+                <p style="font-size: 14px; color: #64748b; margin-top: 10px;">Ya puedes comprar y acceder a demos.</p>
+                <button class="btn-primary" id="btn-logout" style="margin-top: 20px; background: #fef2f2; color: #ef4444; box-shadow: none; border: 1px solid #fee2e2;">Cerrar Sesión</button>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: center;">
+                <a href="admin.html" class="btn-primary"
+                    style="width: 100%; text-decoration: none; text-align: center; background: #1e293b; font-size: 14px; padding: 10px;">Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-glow-element" style="top: 20%; left: 10%;"></div>
+        <div class="hero-glow-element" style="bottom: 10%; right: 10%; animation-delay: -3s;"></div>
+
+        <h1 class="title-gradient">Potencia tu Desarrollo Web con Componentes del Futuro</h1>
+        <p>Descubre el marketplace definitivo de componentes premium en HTML, CSS y JS con un diseño minimalista y
+            ultrarrápido.</p>
+
+        <div style="display: flex; gap: 20px;">
+            <a href="marketplace.html" class="btn-primary" style="text-decoration: none;">Explorar Marketplace</a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section style="padding: 100px 20px;">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h2 style="font-size: 2.5rem; color: #1e293b;">Componentes Destacados</h2>
+            <p style="color: #64748b;">Diseños optimizados con efectos 'Liquid Glass' únicos.</p>
+        </div>
+
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="glass-panel product-card">
+                <div class="product-image">
+                    <!-- Glassy decorative element inside image area -->
+                    <div
+                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; background: rgba(255,255,255,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);">
+                    </div>
+                </div>
+                <h3 style="margin-bottom: 8px;">NavBar de Cristal Premium</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Totalmente responsivo con efectos de
+                    desenfoque dinámico y animaciones suaves.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 45.00</span>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="product.html?id=1" class="btn-primary"
+                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
+                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="glass-panel product-card">
+                <div class="product-image"
+                    style="background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(240,240,255,0.4));">
+                    <div
+                        style="position: absolute; top: 30%; left: 20%; width: 60%; height: 40%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); opacity: 0.1; border-radius: 12px;">
+                    </div>
+                </div>
+                <h3 style="margin-bottom: 8px;">Dashboard Chart UI Kit</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Visualizaciones de datos con estética
+                    futurista y temas claros/oscuros.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 89.00</span>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="product.html?id=2" class="btn-primary"
+                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
+                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="glass-panel product-card">
+                <div class="product-image">
+                    <div
+                        style="position: absolute; bottom: 10%; right: 10%; width: 50px; height: 50px; border-radius: 50%; background: var(--accent-purple); opacity: 0.1; filter: blur(10px);">
+                    </div>
+                </div>
+                <h3 style="margin-bottom: 8px;">Botones Animados Liquid</h3>
+                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Conjunto de 12 botones con
+                    interacciones 'físicas' y sombras realistas.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 29.90</span>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="product.html?id=3" class="btn-primary"
+                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
+                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 FutureCode. Todos los derechos reservados. | Diseñado en Perú</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

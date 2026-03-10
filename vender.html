@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vender Código | FutureCode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .sell-container {
+            max-width: 1200px;
+            margin: 120px auto 100px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(34, 211, 238, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 50px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent-blue);
+            background: rgba(34, 211, 238, 0.05);
+        }
+
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .preview-card-wrap {
+            position: sticky;
+            top: 120px;
+        }
+
+        .hidden-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        @media (max-width: 968px) {
+            .sell-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+
+    <!-- Shared Nav -->
+    <nav class="glass-panel glass-nav">
+        <div class="logo">
+            <h2 style="font-family: 'Outfit'; color: #1e293b; letter-spacing: -1px;">Future<span
+                    style="color: var(--accent-blue);">Code</span></h2>
+        </div>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="marketplace.html">Marketplace</a>
+            <a href="#about">Nosotros</a>
+        </div>
+        <div id="burger" class="burger-menu">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+        </div>
+    </nav>
+
+    <main class="sell-container">
+        <div class="glass-panel" style="padding: 40px;">
+            <h1 style="margin-bottom: 30px; font-family: 'Outfit';">Publicar Nuevo Código</h1>
+            
+            <div class="input-group">
+                <label>Título del Componente/Página</label>
+                <input type="text" id="p-title" class="input-field" placeholder="Ej. Landing Page Gamers Premium" oninput="updatePreview()">
+            </div>
+
+            <div class="input-group">
+                <label>Descripción Corta</label>
+                <textarea id="p-desc" class="input-field" style="height: 100px; padding: 15px;" placeholder="Cuéntanos qué hace tu código..." oninput="updatePreview()"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Precio (Soles)</label>
+                <input type="number" id="p-price" class="input-field" placeholder="0.00" oninput="updatePreview()">
+            </div>
+
+            <div style="margin-top: 30px;">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #1e293b;">Archivos del Código</label>
+                <div class="upload-area" id="drop-area">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2" style="margin-bottom: 15px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <p id="upload-text">Arrastra tu carpeta o haz clic para subir</p>
+                    <p style="font-size: 12px; color: #94a3b8; margin-top: 5px;">(Soporta archivos .zip, carpetas completas y archivos sueltos)</p>
+                    <input type="file" id="file-input" class="hidden-input" multiple webkitdirectory directory>
+                </div>
+                <div id="file-list" class="file-list"></div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%; margin-top: 40px; font-size: 1.1rem; padding: 15px;" onclick="uploadWork()">
+                Publicar en FutureCode
+            </button>
+        </div>
+
+        <div class="preview-card-wrap">
+            <h3 style="margin-bottom: 20px; color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Vista Previa</h3>
+            <div class="glass-panel product-card" style="width: 100%;">
+                <div class="product-image" id="p-img-preview" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--accent-blue); opacity: 0.5;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                            <line x1="9" y1="21" x2="9" y2="9"/>
+                        </svg>
+                    </div>
+                </div>
+                <h3 id="prev-title">Título del Código</h3>
+                <p id="prev-desc" style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Aquí se verá la descripción de tu trabajo...</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="prev-price" style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 0.00</span>
+                    <button class="btn-primary" style="padding: 8px 18px; font-size: 14px; pointer-events: none;">Comprar</button>
+                </div>
+            </div>
+
+            <div class="glass-panel" style="margin-top: 20px; padding: 20px; border: 1px solid rgba(34, 211, 238, 0.2);">
+                <h4 style="color: var(--accent-blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    Info de Subida
+                </h4>
+                <p style="font-size: 13px; color: #64748b; line-height: 1.5;">Al subir tu carpeta, nuestro sistema la empaqueta automáticamente para la venta. Asegúrate de incluir un archivo <code>index.html</code> para la vista previa.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 FutureCode. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const fileList = document.getElementById('file-list');
+        const uploadText = document.getElementById('upload-text');
+
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                uploadText.innerText = `${files.length} archivos seleccionados`;
+                fileList.innerHTML = '<strong>Archivos detectados:</strong><br>';
+                
+                // Mostrar los primeros 5 archivos
+                for (let i = 0; i < Math.min(files.length, 5); i++) {
+                    fileList.innerHTML += `📄 ${files[i].webkitRelativePath || files[i].name}<br>`;
+                }
+                if (files.length > 5) fileList.innerHTML += `... y ${files.length - 5} más.`;
+            }
+        });
+
+        function updatePreview() {
+            const title = document.getElementById('p-title').value;
+            const desc = document.getElementById('p-desc').value;
+            const price = document.getElementById('p-price').value;
+
+            document.getElementById('prev-title').innerText = title || 'Título del Código';
+            document.getElementById('prev-desc').innerText = desc || 'Aquí se verá la descripción de tu trabajo...';
+            document.getElementById('prev-price').innerText = `S/ ${parseFloat(price || 0).toFixed(2)}`;
+        }
+
+        function uploadWork() {
+            const title = document.getElementById('p-title').value;
+            if (!title) {
+                alert("Por favor dale un título a tu trabajo.");
+                return;
+            }
+            alert("¡Procesando subida!\n\nEn un servidor real, tus códigos ahora se estarían subiendo a nuestra base de datos segura y se crearían las claves de descarga para el comprador.");
+        }
+    </script>
+</body>
+
+</html>
