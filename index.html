@@ -57,7 +57,7 @@
     <!-- Navigation -->
     <nav class="glass-panel glass-nav">
         <div class="logo">
-            <h2 style="font-family: 'Outfit'; color: #1e293b; letter-spacing: -1px;">Future<span
+            <h2 style="font-family: 'Outfit'; color: var(--text-main); letter-spacing: -1.5px; font-weight: 800; font-size: 1.6rem;">Future<span
                     style="color: var(--accent-blue);">Code</span></h2>
         </div>
         <div class="nav-links" id="nav-links">
@@ -66,34 +66,40 @@
             <a href="#about">Nosotros</a>
         </div>
         <div class="nav-actions">
-            <!-- Search Button (Only icon on Mobile, Full Bar on Desktop) -->
-            <div id="mobile-search-trigger" class="mobile-search-icon"
-                style="width: 40px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 50%; border: 1px solid rgba(0,0,0,0.05); display: none; place-items: center; cursor: pointer;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2">
+            <!-- Search Bar -->
+            <div class="search-bar-desktop"
+                style="padding: 10px 18px; background: rgba(0,0,0,0.04); border-radius: 50px; display: flex; align-items: center; border: 1px solid rgba(0,0,0,0.02); transition: var(--transition-smooth);">
+                <input type="text" id="global-search" placeholder="Buscar código..."
+                    style="background: none; border: none; font-size: 14px; color: var(--text-main); outline: none; width: 160px; font-family: var(--font-body);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2.5" style="margin-left: 8px;">
                     <circle cx="11" cy="11" r="8" />
                     <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
             </div>
 
-            <div class="search-bar-desktop"
-                style="padding: 8px 15px; background: rgba(0,0,0,0.03); border-radius: 50px; display: flex; align-items: center; border: 1px solid rgba(0,0,0,0.05);">
-                <input type="text" id="global-search" placeholder="Buscar..."
-                    style="background: none; border: none; font-size: 14px; color: #1e293b; outline: none; width: 140px;">
+            <!-- Cart Trigger (New feature) -->
+            <div id="cart-btn" class="glass-panel"
+                style="width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.05); position: relative;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                </svg>
+                <span id="cart-count" style="position: absolute; top: -5px; right: -5px; background: var(--accent-blue); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: none; place-items: center; font-weight: 700;">0</span>
             </div>
 
-            <!-- Profile/Account Button -->
-            <div id="account-btn"
-                style="width: 40px; height: 40px; background: rgba(255,255,255,0.8); border-radius: 50%; border: 1px solid rgba(0,0,0,0.05); display: grid; place-items: center; cursor: pointer;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2">
+            <!-- Profile Button -->
+            <div id="account-btn" class="glass-panel"
+                style="width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.05);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                 </svg>
             </div>
-        </div>
-        <div class="burger-menu" id="burger">
-            <div class="burger-line"></div>
-            <div class="burger-line"></div>
-            <div class="burger-line"></div>
+            
+            <div class="burger-menu" id="burger">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
         </div>
     </nav>
 
@@ -143,24 +149,43 @@
                 <button class="btn-primary" id="btn-logout" style="margin-top: 20px; background: #fef2f2; color: #ef4444; box-shadow: none; border: 1px solid #fee2e2;">Cerrar Sesión</button>
             </div>
 
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: center;">
-                <a href="admin.html" class="btn-primary"
-                    style="width: 100%; text-decoration: none; text-align: center; background: #1e293b; font-size: 14px; padding: 10px;">Admin</a>
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; gap: 10px; justify-content: center;">
+                <a href="admin.html" class="btn-secondary"
+                    style="width: 100%; text-decoration: none; text-align: center; font-size: 14px; padding: 12px;">Admin Panel</a>
+                <a href="vender.html" class="btn-primary"
+                    style="width: 100%; text-decoration: none; text-align: center; font-size: 14px; padding: 12px; background: var(--text-main);">Vender Código</a>
             </div>
         </div>
     </div>
 
-    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-glow-element" style="top: 20%; left: 10%;"></div>
-        <div class="hero-glow-element" style="bottom: 10%; right: 10%; animation-delay: -3s;"></div>
+        <div class="bg-glow" style="top: 20%; left: 80%; opacity: 0.4;"></div>
+        <div class="bg-glow" style="bottom: 20%; left: 10%; opacity: 0.4;"></div>
 
-        <h1 class="title-gradient">Potencia tu Desarrollo Web con Componentes del Futuro</h1>
-        <p>Descubre el marketplace definitivo de componentes premium en HTML, CSS y JS con un diseño minimalista y
-            ultrarrápido.</p>
+        <div style="background: rgba(37, 99, 235, 0.05); padding: 8px 16px; border-radius: 100px; border: 1px solid rgba(37, 99, 235, 0.1); color: var(--accent-blue); font-size: 14px; font-weight: 600; margin-bottom: 24px; pointer-events: none;">
+            ✨ Nueva colección de componentes 2026
+        </div>
+        <h1 class="title-gradient">Potencia tu Desarrollo con Componentes del Futuro</h1>
+        <p>Descubre el marketplace definitivo de componentes premium en HTML, CSS y JS con un diseño minimalista, 
+           efectos de cristal líquido y optimización de clase mundial.</p>
 
-        <div style="display: flex; gap: 20px;">
-            <a href="marketplace.html" class="btn-primary" style="text-decoration: none;">Explorar Marketplace</a>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+            <a href="marketplace.html" class="btn-primary" style="text-decoration: none;">
+                Explorar Marketplace
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+            <a href="#about" class="btn-secondary" style="text-decoration: none;">Saber más</a>
+        </div>
+
+        <div style="margin-top: 60px; width: 100%; max-width: 900px; aspect-ratio: 16/9; border-radius: 24px; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(20px); overflow: hidden; box-shadow: 0 40px 100px -20px rgba(0,0,0,0.15); display: grid; place-items: center;">
+            <div style="text-align: center; opacity: 0.6;">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="1.5">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                <p style="margin-top: 15px; font-weight: 500;">Preview del Marketplace</p>
+            </div>
         </div>
     </section>
 
@@ -175,41 +200,39 @@
             <!-- Product 1 -->
             <div class="glass-panel product-card">
                 <div class="product-image">
-                    <!-- Glassy decorative element inside image area -->
-                    <div
-                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 60%; background: rgba(255,255,255,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.5); backdrop-filter: blur(5px);">
-                    </div>
+                    <img src="navbar_cristal_premium_1773261529300.png" alt="NavBar Cristal" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <h3 style="margin-bottom: 8px;">NavBar de Cristal Premium</h3>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Totalmente responsivo con efectos de
-                    desenfoque dinámico y animaciones suaves.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 45.00</span>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="product.html?id=1" class="btn-primary"
-                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
-                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+                <h3 style="margin-bottom: 8px; font-size: 1.25rem;">NavBar de Cristal Premium</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; flex-grow: 1;">Totalmente responsivo con efectos de desenfoque dinámico y animaciones ultra-suaves para proyectos modernos.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                    <span style="font-weight: 800; font-size: 1.4rem; color: var(--text-main);">S/ 45.00</span>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="product.html?id=1" class="btn-secondary" style="padding: 10px; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; text-decoration: none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </a>
+                        <button class="btn-primary btn-add-cart" data-id="1" data-name="NavBar Cristal" data-price="45.00" style="padding: 10px 20px; font-size: 14px;">Comprar</button>
                     </div>
                 </div>
             </div>
 
             <!-- Product 2 -->
             <div class="glass-panel product-card">
-                <div class="product-image"
-                    style="background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(240,240,255,0.4));">
-                    <div
-                        style="position: absolute; top: 30%; left: 20%; width: 60%; height: 40%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); opacity: 0.1; border-radius: 12px;">
-                    </div>
+                <div class="product-image">
+                    <img src="dashboard_chart_ui_kit_1773261893390.png" alt="Dashboard Kit" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <h3 style="margin-bottom: 8px;">Dashboard Chart UI Kit</h3>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Visualizaciones de datos con estética
-                    futurista y temas claros/oscuros.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 89.00</span>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="product.html?id=2" class="btn-primary"
-                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
-                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+                <h3 style="margin-bottom: 8px; font-size: 1.25rem;">Dashboard Chart UI Kit</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; flex-grow: 1;">Visualizaciones de datos con estética futurista, temas dinámicos y gran interactividad.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                    <span style="font-weight: 800; font-size: 1.4rem; color: var(--text-main);">S/ 89.00</span>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="product.html?id=2" class="btn-secondary" style="padding: 10px; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; text-decoration: none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </a>
+                        <button class="btn-primary btn-add-cart" data-id="2" data-name="Dashboard UI Kit" data-price="89.00" style="padding: 10px 20px; font-size: 14px;">Comprar</button>
                     </div>
                 </div>
             </div>
@@ -217,19 +240,39 @@
             <!-- Product 3 -->
             <div class="glass-panel product-card">
                 <div class="product-image">
-                    <div
-                        style="position: absolute; bottom: 10%; right: 10%; width: 50px; height: 50px; border-radius: 50%; background: var(--accent-purple); opacity: 0.1; filter: blur(10px);">
+                    <img src="animated_liquid_buttons_1773261949630.png" alt="Liquid Buttons" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h3 style="margin-bottom: 8px; font-size: 1.25rem;">Botones Animados Liquid</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; flex-grow: 1;">Conjunto de 12 botones con interacciones físicas, micro-animaciones y sombras realistas.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                    <span style="font-weight: 800; font-size: 1.4rem; color: var(--text-main);">S/ 29.90</span>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="product.html?id=3" class="btn-secondary" style="padding: 10px; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; text-decoration: none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </a>
+                        <button class="btn-primary btn-add-cart" data-id="3" data-name="Botones Liquid" data-price="29.90" style="padding: 10px 20px; font-size: 14px;">Comprar</button>
                     </div>
                 </div>
-                <h3 style="margin-bottom: 8px;">Botones Animados Liquid</h3>
-                <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">Conjunto de 12 botones con
-                    interacciones 'físicas' y sombras realistas.</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-weight: 700; font-size: 1.2rem; color: #1e293b;">S/ 29.90</span>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="product.html?id=3" class="btn-primary"
-                            style="padding: 8px 18px; font-size: 14px; text-decoration: none; background: white; color: #1e293b; border: 1px solid rgba(0,0,0,0.1); box-shadow: none;">Detalle</a>
-                        <button class="btn-primary" style="padding: 8px 18px; font-size: 14px;">Comprar</button>
+            </div>
+
+            <!-- Product 4: GALAXIA -->
+            <div class="glass-panel product-card">
+                <div class="product-image">
+                    <img src="proyectos/GALAXIA/images/portada.png" alt="Galaxia 3D" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h3 style="margin-bottom: 8px; font-size: 1.25rem;">Proyecto Galaxia 3D</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px; flex-grow: 1;">Experiencia inmersiva con Three.js. Partículas interactivas y efectos visuales de vanguardia.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                    <span style="font-weight: 800; font-size: 1.4rem; color: var(--text-main);">S/ 120.00</span>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="product.html?id=5" class="btn-secondary" style="padding: 10px; border-radius: 50%; width: 40px; height: 40px; display: grid; place-items: center; text-decoration: none;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </a>
+                        <button class="btn-primary btn-add-cart" data-id="5" data-name="Galaxia 3D" data-price="120.00" style="padding: 10px 20px; font-size: 14px;">Comprar</button>
                     </div>
                 </div>
             </div>
@@ -237,58 +280,75 @@
     <!-- Featured Products Section End -->
 
     <!-- About Section (Nosotros) -->
-    <section id="about" style="padding: 100px 20px; max-width: 1200px; margin: 0 auto;">
-        <div class="glass-panel" style="padding: 60px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.5);">
-            <div style="flex: 2; min-width: 300px;">
-                <span style="color: var(--accent-blue); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Sobre Nosotros</span>
-                <h2 style="font-size: 3rem; color: #1e293b; margin: 15px 0 25px;">Impulsando la <span class="title-gradient">Innovación</span> Digital</h2>
-                <p style="color: #64748b; font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px;">
-                    En <strong>FutureCode</strong>, nos especializamos en la creación de experiencias web de alto impacto. Nuestro objetivo es proporcionar a los desarrolladores y empresas herramientas de vanguardia, desde componentes minimalistas hasta sistemas complejos, todo con una estética premium y optimizada.
+    <!-- About Section (Nosotros) -->
+    <section id="about" style="padding: 120px 20px; max-width: 1200px; margin: 0 auto;">
+        <div class="glass-panel" style="padding: 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 60px; align-items: center; background: rgba(255,255,255,0.4);">
+            <div>
+                <span style="color: var(--accent-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; display: block; margin-bottom: 20px;">Sobre Nosotros</span>
+                <h2 style="font-size: 3.5rem; color: var(--text-main); margin-bottom: 24px; line-height: 1.1;">Impulsando la <span class="title-gradient">Innovación</span> Digital</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 32px;">
+                    En <strong>FutureCode</strong>, nos especializamos en la creación de experiencias web de alto impacto. Nuestro objetivo es proporcionar a los desarrolladores herramientas de vanguardia, desde componentes minimalistas hasta sistemas complejos, todo con una estética premium.
                 </p>
-                <div class="glass-panel" style="background: rgba(59, 130, 246, 0.03); border: 1px solid rgba(59, 130, 246, 0.1); padding: 30px; border-radius: 20px;">
-                    <h3 style="color: #1e293b; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                        ¿Necesitas algo a medida?
-                    </h3>
-                    <p style="color: #64748b; margin-bottom: 20px;">
-                        Estamos disponibles para crear <strong>códigos personalizados</strong> adaptados perfectamente a tus necesidades técnicas y visuales.
-                    </p>
-                    <a href="https://wa.me/51956398667?text=Hola%20FutureCode,%20me%20gustaría%20solicitar%20un%20código%20personalizado." 
-                       target="_blank" 
-                       class="btn-primary" 
-                       style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.438 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                        </svg>
-                        Pedir Código Personalizado
-                    </a>
-                    <p style="margin-top: 15px; font-size: 0.9rem; color: #94a3b8; font-weight: 500;">
-                        WhatsApp: +51 956 398 667
-                    </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
+                    <div style="background: rgba(37, 99, 235, 0.05); padding: 20px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02);">
+                        <h4 style="color: var(--text-main); margin-bottom: 5px;">+500</h4>
+                        <p style="font-size: 13px; color: var(--text-muted);">Componentes</p>
+                    </div>
+                    <div style="background: rgba(124, 58, 237, 0.05); padding: 20px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02);">
+                        <h4 style="color: var(--text-main); margin-bottom: 5px;">99%</h4>
+                        <p style="font-size: 13px; color: var(--text-muted);">Satisfacción</p>
+                    </div>
                 </div>
+
+                <a href="https://wa.me/51956398667?text=Hola%20FutureCode,%20me%20gustaría%20solicitar%20un%20código%20personalizado." 
+                   target="_blank" 
+                   class="btn-primary" 
+                   style="text-decoration: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.438 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    Pedir Código Personalizado
+                </a>
             </div>
-            <div style="flex: 1; min-width: 300px; display: flex; justify-content: center; position: relative;">
-                <div class="hero-glow-element" style="width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5;"></div>
-                <div style="width: 280px; height: 280px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue)); border-radius: 40px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(34, 211, 238, 0.3); border: 4px solid white;">
-                    <div style="position: absolute; top: 10%; left: 10%; width: 80%; height: 80%; background: rgba(255,255,255,0.1); border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center;">
-                        <div style="width: 80px; height: 80px; background: white; border-radius: 50%; margin-bottom: 15px; display: grid; place-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2">
+            
+            <div style="position: relative; display: flex; justify-content: center;">
+                <div class="bg-glow" style="width: 300px; height: 300px; top: 50%; left: 50%; opacity: 0.6;"></div>
+                <div style="width: 100%; max-width: 400px; aspect-ratio: 1; border-radius: 40px; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); padding: 4px;">
+                    <div style="width: 100%; height: 100%; background: #0f172a; border-radius: 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: white;">
+                        <div style="width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: grid; place-items: center; margin-bottom: 30px; backdrop-filter: blur(10px);">
+                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5">
                                 <path d="M16 18l6-6-6-6M8 6l-6 6 6 6"></path>
                             </svg>
                         </div>
-                        <h4 style="color: white; font-family: 'Outfit'; font-size: 1.2rem;">FutureCode</h4>
-                        <p style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Desarrollo Premium</p>
+                        <h3 style="font-size: 1.8rem; margin-bottom: 10px;">FutureCode</h3>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">Elevando el estándar del desarrollo web moderno.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer Section -->
     <footer class="footer">
-        <p>© 2026 FutureCode. Todos los derechos reservados. | Diseñado en Perú</p>
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="font-family: 'Outfit'; color: var(--text-main); margin-bottom: 20px;">Future<span style="color: var(--accent-blue);">Code</span></h3>
+                <p style="color: var(--text-light); font-size: 14px; line-height: 1.6;">Liderando la innovación en el desarrollo de interfaces premium para la web moderna.</p>
+            </div>
+            <div style="display: flex; gap: 60px;">
+                <div>
+                    <h4 style="margin-bottom: 20px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Links</h4>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                        <li><a href="marketplace.html" style="text-decoration: none; color: var(--text-muted);">Marketplace</a></li>
+                        <li><a href="vender.html" style="text-decoration: none; color: var(--text-muted);">Vender</a></li>
+                        <li><a href="#about" style="text-decoration: none; color: var(--text-muted);">Nosotros</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="border-top: 1px solid rgba(0,0,0,0.05); margin-top: 60px; padding-top: 30px; text-align: center;">
+            <p style="color: var(--text-light); font-size: 13px;">© 2026 FutureCode. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>

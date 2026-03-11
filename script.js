@@ -25,8 +25,72 @@ document.addEventListener('DOMContentLoaded', async () => {
         await initSupabase();
     }
 
-    // --- 0. Session Check ---
+    // --- Dynamic Auth Modal Injection ---
+    const injectAuthModal = () => {
+        if (!document.getElementById('account-modal')) {
+            const modalHTML = `
+            <div class="modal-overlay" id="account-modal">
+                <div class="glass-panel modal-content" style="max-width: 450px;">
+                    <span class="modal-close" id="modal-close">✕</span>
+                    
+                    <div id="auth-tabs" style="display: flex; gap: 20px; margin-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
+                        <h3 id="tab-login" style="cursor: pointer; color: var(--accent-blue); position: relative;">Iniciar Sesión</h3>
+                        <h3 id="tab-register" style="cursor: pointer; color: #64748b;">Crear Cuenta</h3>
+                    </div>
+
+                    <form id="login-form">
+                        <div class="input-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" id="login-email" class="input-field" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contraseña</label>
+                            <input type="password" id="login-password" class="input-field" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Entrar</button>
+                    </form>
+
+                    <form id="register-form" style="display: none;">
+                        <div class="input-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="reg-name" class="input-field" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" id="reg-email" class="input-field" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contraseña</label>
+                            <input type="password" id="reg-password" class="input-field" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Registrarse</button>
+                    </form>
+
+                    <div id="auth-success-msg" style="display: none; text-align: center; padding: 20px;">
+                        <h3 style="color: var(--accent-blue);">¡Bienvenido, <span id="user-display-name"></span>!</h3>
+                        <p style="font-size: 14px; color: #64748b; margin-top: 10px;">Ya puedes comprar y acceder a demos.</p>
+                        <button class="btn-primary" id="btn-logout" style="margin-top: 20px; background: #fef2f2; color: #ef4444; box-shadow: none; border: 1px solid #fee2e2;">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>`;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+    };
+    injectAuthModal();
+
+    // --- 0. Session Check & Cart Initialization ---
     let currentUser = null;
+    let cart = JSON.parse(localStorage.getItem('futurecode_cart')) || [];
+    
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-count');
+        if (badge) {
+            badge.innerText = cart.length;
+            badge.style.display = cart.length > 0 ? 'grid' : 'none';
+        }
+    }
+    updateCartBadge();
+
     if (clientSB) {
         const { data: { session } } = await clientSB.auth.getSession();
         currentUser = session?.user || null;
@@ -60,6 +124,63 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (registerForm) registerForm.style.display = 'none';
             if (authTabs) authTabs.style.display = 'flex';
             if (successMsg) successMsg.style.display = 'none';
+        }
+    }
+
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-count');
+        if (badge) {
+            badge.innerText = cart.length;
+            badge.style.display = cart.length > 0 ? 'grid' : 'none';
+        }
+    }
+
+    // --- Product Database ---
+    const productsDB = {
+        '1': { name: 'NavBar de Cristal Premium', price: '45.00', desc: 'Componente de navegación translúcido con desenfoque dinámico y diseño ultra-moderno.', img: 'navbar_cristal_premium_1773261529300.png' },
+        '2': { name: 'Dashboard Chart UI Kit', price: '89.00', desc: 'Visualizaciones de datos con estética futurista y componentes de control inteligentes.', img: 'dashboard_chart_ui_kit_1773261893390.png' },
+        '3': { name: 'Botones Animados Liquid', price: '29.90', desc: 'Conjunto de 12 botones con interacciones físicas, micro-animaciones y sombras realistas.', img: 'animated_liquid_buttons_1773261949630.png' },
+        '4': { name: 'Glass Card Hover Effects', price: '35.50', desc: 'Efectos cinéticos con sombras realistas de cristal y transiciones suaves.', img: 'animated_liquid_buttons_1773261949630.png' },
+        '5': { name: 'Proyecto Galaxia 3D', price: '120.00', desc: 'Experiencia inmersiva con Three.js. Partículas interactivas y efectos visuales de galaxia de vanguardia.', img: 'proyectos/GALAXIA/images/portada.png' }
+    };
+
+    // --- Product Details Loader ---
+    if (window.location.pathname.includes('product.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        const product = productsDB[productId];
+
+        if (product) {
+            const pName = document.getElementById('p-name');
+            const pPrice = document.getElementById('p-price');
+            const pDesc = document.querySelector('.product-detail-container p');
+            const pPreview = document.querySelector('.preview-area');
+            const buyBtn = document.getElementById('buy-now-btn');
+            const demoBtn = pPreview?.querySelector('.btn-primary');
+
+            if (pName) pName.innerText = product.name;
+            if (pPrice) pPrice.innerText = product.price;
+            if (pDesc) pDesc.innerText = product.desc;
+            if (pPreview) {
+                // Keep the demo button if it exists, but add the image before it
+                const imgHTML = `<img src="${product.img}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1;">`;
+                pPreview.style.position = 'relative';
+                pPreview.style.overflow = 'hidden';
+                pPreview.insertAdjacentHTML('afterbegin', imgHTML);
+                
+                if (demoBtn) {
+                    demoBtn.style.position = 'relative';
+                    demoBtn.style.zIndex = '2';
+                    if (productId === '5') {
+                        demoBtn.href = 'proyectos/GALAXIA/Galaxia.html';
+                    }
+                }
+            }
+            if (buyBtn) {
+                buyBtn.dataset.id = productId;
+                buyBtn.dataset.name = product.name;
+                buyBtn.dataset.price = product.price;
+            }
         }
     }
     // --- 1. Mobile Burger Menu ---
@@ -197,9 +318,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.open('https://www.mercadopago.com.pe/checkout/v1/redirect?pref_id=YOUR_PREFERENCE_ID', '_blank');
     };
 
-    // Attach to all buy buttons
+    // Attach to all buy and cart buttons
     document.addEventListener('click', (e) => {
-        const isBuyButton = e.target.classList.contains('btn-primary') && (e.target.innerText.includes('Comprar') || e.target.innerText.includes('Purchase'));
+        const isBuyButton = e.target.classList.contains('btn-add-cart') || (e.target.classList.contains('btn-primary') && e.target.innerText.includes('Comprar'));
         const isDemoButton = e.target.innerText.includes('Demo') || e.target.href?.includes('demo.html');
 
         if (isBuyButton || isDemoButton) {
@@ -212,35 +333,71 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (isBuyButton) {
-            const card = e.target.closest('.glass-panel');
-            if (!card) return;
+            const btn = e.target;
+            const item = {
+                id: btn.dataset.id || 'N/A',
+                name: btn.dataset.name || 'Componente FutureCode',
+                price: btn.dataset.price || '0'
+            };
 
-            // Extract Name and Price dynamically from the card
-            const nameElement = card.querySelector('h1, h2, h3');
-            const priceElement = card.querySelector('span[style*="font-weight: 700"], span[style*="font-weight: 800"]');
+            // Add to cart animation/feedback
+            cart.push(item);
+            localStorage.setItem('futurecode_cart', JSON.stringify(cart));
+            updateCartBadge();
+            
+            btn.innerText = '¡Añadido!';
+            btn.style.background = 'var(--accent-cyan)';
+            
+            setTimeout(() => {
+                btn.innerText = 'Comprar';
+                btn.style.background = '';
+            }, 2000);
 
-            const itemName = nameElement ? nameElement.innerText.trim() : 'Componente FutureCode';
-            let priceText = priceElement ? priceElement.innerText : '0';
-
-            // Clean price text (remove S/, spaces, etc)
-            const price = priceText.replace(/[^\d.]/g, '').trim();
-
-            if (parseFloat(price) > 0) {
-                initCheckout(itemName, price);
-            } else {
-                console.error("No se pudo detectar un precio válido para este producto.");
-            }
+            // Optional: Auto-trigger checkout if single purchase
+            // initCheckout(item.name, item.price);
         }
     });
 
-    // --- 4. Search Functionality ---
+    // Cart Button Click (Show cart - future capability)
+    const cartBtn = document.getElementById('cart-btn');
+    if (cartBtn) {
+        cartBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert("Tu carrito está vacío.");
+            } else {
+                let itemsList = cart.map(i => `- ${i.name} (S/ ${i.price})`).join('\n');
+                if (confirm(`Productos en tu carrito:\n${itemsList}\n\n¿Deseas proceder al pago total?`)) {
+                    initCheckout("Total Pedido", cart.reduce((acc, i) => acc + parseFloat(i.price), 0).toFixed(2));
+                }
+            }
+        });
+    }
+
+    // --- 4. Search Functionality (Added Filtering) ---
     const searchInput = document.getElementById('global-search');
     if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = searchInput.value.toLowerCase();
+            const cards = document.querySelectorAll('.product-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const desc = card.querySelector('p').innerText.toLowerCase();
+                
+                if (title.includes(query) || desc.includes(query)) {
+                    card.style.display = 'flex';
+                    card.style.opacity = '1';
+                } else {
+                    card.style.display = 'none';
+                    card.style.opacity = '0';
+                }
+            });
+        });
+
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const query = searchInput.value;
-                if (query.trim()) {
-                    alert(`Buscando: "${query}"... (Funcionalidad de backend pronto disponible)`);
+                if (query.trim() && !window.location.pathname.includes('index.html')) {
                     window.location.href = `marketplace.html?q=${encodeURIComponent(query)}`;
                 }
             }
